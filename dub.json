@@ -1,0 +1,12 @@
+{
+	"name": "sdltest",
+	"authors": [
+		"Robly"
+	],
+	"dependencies": {
+		"derelict-sdl2": "~>2.1.2"
+	},
+	"description": "sdl testing",
+	"copyright": "none",
+	"license": "none"
+}
