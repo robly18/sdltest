@@ -31,9 +31,24 @@ class Button {
 		}
 	}
 		
-private:
+protected:
 	SDL_Rect rect;
+private:
 	void delegate() action = null;
 	
 	Sprite high, low;
+}
+
+class SpriteButton : Button {
+	this(const SDL_Rect r, Sprite hi, Sprite lo, Sprite s, void delegate() act = null) {
+		super(r, hi, lo, act);
+		sprite = s;
+	}
+	
+	override void render(SDL_Surface* surface) {
+		super.render(surface);
+		sprite.render(surface, rect);
+	}
+private:
+	Sprite sprite;
 }

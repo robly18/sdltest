@@ -58,7 +58,7 @@ private:
 			boardState[x][y] = state;
 			
 			if (checkWin(state, x, y)) {
-				nextState = new ReplayState;
+				nextState = new ReplayState(this);
 			}
 			
 			state = 1 - state;
