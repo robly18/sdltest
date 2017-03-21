@@ -1,4 +1,3 @@
-import std.stdio;
 import derelict.sdl2.sdl;
 import derelict.sdl2.image;
 import engine;
@@ -11,8 +10,7 @@ void main() {
 	
 	auto engine = new Engine("Test");
 	bool quit = false;
-	while (engine.handleEvents()) {
-		engine.tick();
+	while (engine.handleEvents() && engine.tick()) {
 		engine.render();
 	}
 	

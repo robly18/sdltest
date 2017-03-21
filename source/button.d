@@ -30,11 +30,12 @@ class Button {
 				action();
 		}
 	}
+	
+	void delegate() action = null;
 		
 protected:
 	SDL_Rect rect;
 private:
-	void delegate() action = null;
 	
 	Sprite high, low;
 }

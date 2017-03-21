@@ -1,4 +1,3 @@
-import std.stdio;
 import derelict.sdl2.sdl;
 import derelict.sdl2.image;
 
@@ -6,7 +5,6 @@ class Spritesheet {
 	this(const(char)* dir, Uint32 k = 0xFF00FF) {
 		texture = IMG_Load(dir);
 		SDL_SetColorKey(texture, SDL_TRUE, k);
-		writeln(texture);
 	}
 	
 	~this() {

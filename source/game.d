@@ -5,9 +5,11 @@ import constants;
 
 import replayState;
 
+import ai;
+
 
 class Game : State {
-	this() {
+	this(AI ai_ = null) {
 		tmp_txt = new Spritesheet("texture.png");
 		
 		for (int x = 0; x != 3; x++)
@@ -15,6 +17,7 @@ class Game : State {
 			boardState[x][y] = -1;
 			board[x][y] = new Button(SDL_Rect(10 + 42*x, 10 + 42*y, 32, 32), tmp_txt.makeSprite(64,0,32,32), tmp_txt.makeSprite(64,32,32,32), act(x,y));
 		}
+		ai = ai_;
 	}
 
 	override State tick() {
@@ -37,6 +40,20 @@ class Game : State {
 		}
 	}
 	
+	void resetBoard() {
+		state = 1;
+		for (int x = 0; x != 3; x++)
+		for (int y = 0; y != 3; y++) {
+			boardState[x][y] = -1;
+			board[x][y] = new Button(SDL_Rect(10 + 42*x, 10 + 42*y, 32, 32), tmp_txt.makeSprite(64,0,32,32), tmp_txt.makeSprite(64,32,32,32), act(x,y));
+		}
+		plays = 0;
+		nextState = null;
+	}
+	
+	Button[3][3] board;
+	int[3][3] boardState;
+	
 private:
 
 	bool checkWin(int who, int x, int y) {
@@ -56,30 +73,30 @@ private:
 		void f () {
 			board[x][y] = new Button(SDL_Rect(10+42*x, 10+42*y, 32, 32), tmp_txt.makeSprite(96+state*32, 0, 32, 32), tmp_txt.makeSprite(96+state*32, 32, 32, 32));
 			boardState[x][y] = state;
+			plays++;
 			
 			if (checkWin(state, x, y)) {
-				nextState = new ReplayState(this);
+				nextState = new ReplayState(this, state);
+			} else if (plays == 9) {
+				nextState = new ReplayState(this, -1);
+			} else {
+				state = 1 - state;
+				if (ai && state == aiturn) {
+					ai.play(this);
+				}
 			}
-			
-			state = 1 - state;
 		}
 		return &f;
 	}
 	
-	void resetBoard() {
-		state = 1;
-		for (int x = 0; x != 3; x++)
-		for (int y = 0; y != 3; y++) {
-			boardState[x][y] = -1;
-			board[x][y] = new Button(SDL_Rect(10 + 42*x, 10 + 42*y, 32, 32), tmp_txt.makeSprite(64,0,32,32), tmp_txt.makeSprite(64,32,32,32), act(x,y));
-		}
-	}
 
-	Button[3][3] board;
-	int[3][3] boardState;
+	int plays = 0;
 	int state = 1;
 	
 	Spritesheet tmp_txt;
 	
 	State nextState = null;
+	
+	AI ai = null;
+	int aiturn = 0;
 }

@@ -2,7 +2,7 @@ import derelict.sdl2.sdl;
 import constants;
 
 import state;
-import game;
+import menu;
 
 class Engine {
 	
@@ -10,11 +10,12 @@ class Engine {
 		window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SW*SCALE, SH*SCALE, SDL_WINDOW_SHOWN);
 		windowSurface = SDL_GetWindowSurface(window);
 		surface = SDL_CreateRGBSurface(0, SW, SH, 32, 0xFF0000, 0x00FF00, 0x0000FF, 0);
-		state = new Game();
+		state = new MainMenu();
 	}
 	
-	void tick() {
+	bool tick() {
 		state = state.tick();
+		return state !is null;
 	}
 	
 	void render() {
